@@ -16,6 +16,7 @@ pacotes=(
     "docker-compose"
     "vim"
     "neovim"
+    "keypassxc"
 )
 
 installSoftwares() {
@@ -94,9 +95,20 @@ angular() {
     sudo npm i --global @angular/cli
 }
 
+
+configurarNeoVim() {
+    mkdir /home/$USER/.config/nvim/
+    cd /home/$USER/.config/nvim/
+    git clone git@github.com:Joaogneves/configuracoesnvim.git
+    cd /home/$USER/.config/nvim/configuracoesnvim/
+    mv coc-settings.json .. && mv init.vim ..
+    rm -rf /home/$USER/.config/nvim/configuracoesnvim/
+}
+
 installSoftwares
 configurarGit
 #code
 postman
 aurInstall
 angular
+configurarNeoVim

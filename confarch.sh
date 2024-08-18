@@ -9,10 +9,13 @@ pacotes=(
     "git"
     "intellij-idea-community-edition"
     "nodejs-lts-iron"
+    "npm"
     "nano"
     "firefox"
     "docker"
     "docker-compose"
+    "vim"
+    "neovim"
 )
 
 installSoftwares() {
@@ -40,7 +43,7 @@ configurarGit() {
     else
         echo "Configurando user.email."
         git config --global user.email "joaogabriel443@gmail.com"
-    fi    
+    fi
 }
 
 code() {
@@ -72,10 +75,14 @@ echo "Instalando pacotes aur"
 aurInstall() {
     for package_dir in "${aur[@]}"; do
         if [ -d "$package_dir" ]; then
-            echo "Navegando para o diretório $package_dir"
-            cd "$package_dir" || exit
-            echo "Executando makepkg -si --noconfirm em $package_dir"
-            makepkg -si --noconfirm
+            if pacman -Qs $package_dir > /dev/null; then
+                echo "$package_dir já está instalado."
+            else
+                echo "Navegando para o diretório $package_dir"
+                cd "$package_dir" || exit
+                echo "Executando makepkg -si --noconfirm em $package_dir"
+                makepkg -si --noconfirm
+            fi
         else
             echo "O diretório $package_dir não existe."
         fi
@@ -89,7 +96,7 @@ angular() {
 
 installSoftwares
 configurarGit
-code
+#code
 postman
 aurInstall
 angular

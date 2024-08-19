@@ -1,10 +1,14 @@
 #!/bin/bash
 
-echo "Instalando pacotes pacman"
 
-sudo pacman -Syu --noconfirm
 
-pacotes=(
+upgradePackage() {
+    echo "Atualizando pacotes...."
+    sudo pacman -Syu --noconfirm
+    echo "pacotes atualizados"
+}
+
+packages=(
     "jdk17-openjdk"
     "git"
     "intellij-idea-community-edition"
@@ -19,18 +23,25 @@ pacotes=(
     "keypassxc"
 )
 
-installSoftwares() {
-    for pacote in "${pacotes[@]}"; do
-        if ! pacman -Q $pacote &>/dev/null; then
-            echo "Instalando $pacote..."
-            sudo pacman -S --noconfirm --needed $pacote
+installPackagesPacman() {
+
+    echo "Instalando pacotes..."
+
+    for package in "${packages[@]}"; do
+        if ! pacman -Q $package &>/dev/null; then
+            echo "Instalando $package..."
+            sudo pacman -S --noconfirm --needed $package
         else
-            echo "$pacote já está instalado."
+            echo "$package já está instalado."
         fi
     done
+
+    echo "pacotes instalados..."
 }
 
-configurarGit() {
+confGit() {
+
+    echo "Configurando Git..."
 
     if git config --global user.name >/dev/null 2>&1; then
         echo "O user.name está definido como: $(git config --global user.name)"
@@ -45,12 +56,15 @@ configurarGit() {
         echo "Configurando user.email."
         git config --global user.email "joaogabriel443@gmail.com"
     fi
+
+    echo "Git configurado com sucesso..."
 }
 
 code() {
     mkdir -p /home/$USER/aur
     cd /home/$USER/aur
     if [ ! -d "visual-studio-code-bin" ]; then
+        echo "Clonando vscode..."
         git clone https://aur.archlinux.org/visual-studio-code-bin.git
     else
         echo "O repositório já foi clonado."
@@ -58,6 +72,9 @@ code() {
 }
 
 postman() {
+
+    echo "Clonando postman..."
+
     cd /home/$USER/aur
     if [ ! -d "postman-bin" ]; then
         git clone https://aur.archlinux.org/postman-bin.git
@@ -71,9 +88,11 @@ aur=(
     "/home/$USER/aur/postman-bin"
 )
 
-echo "Instalando pacotes aur"
 
 aurInstall() {
+
+    echo "Instalando pacotes Arch User Repository..."
+
     for package_dir in "${aur[@]}"; do
         if [ -d "$package_dir" ]; then
             if pacman -Qs $package_dir > /dev/null; then
@@ -89,26 +108,49 @@ aurInstall() {
         fi
     done
     rm -rf /home/$USER/aur
+
+    echo "Instalações finalizadas..."
 }
 
 angular() {
+    echo "Instalando angular..."
     sudo npm i --global @angular/cli
+    echo "Angular instalado..."
 }
 
 
-configurarNeoVim() {
+confNeoVim() {
+
+    echo "Configurações do nvim..."
+
     mkdir /home/$USER/.config/nvim/
     cd /home/$USER/.config/nvim/
     git clone git@github.com:Joaogneves/configuracoesnvim.git
     cd /home/$USER/.config/nvim/configuracoesnvim/
     mv coc-settings.json .. && mv init.vim ..
     rm -rf /home/$USER/.config/nvim/configuracoesnvim/
+
+    echo "nvim configurado com sucesso..."
 }
 
-installSoftwares
-configurarGit
+
+startDocker() {
+
+    echo "Iniciando docker..."
+
+    sudo systemctl enable docker
+    sudo systemctl start docker
+
+    echo "Docker iniciado...."
+}
+
+installPackagesPacman
+confGit
 #code
 postman
 aurInstall
 angular
-configurarNeoVim
+confNeoVim
+startDocker
+
+echo "Configurações de pós instalação do Arch Linux finalizadas..."

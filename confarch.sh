@@ -21,6 +21,7 @@ packages=(
     "vim"
     "neovim"
     "keypassxc"
+    "libreoffice-still-pt-br"
 )
 
 installPackagesPacman() {
@@ -144,7 +145,7 @@ startDocker() {
     echo "Docker iniciado...."
 }
 
-preConfLibreOffice {
+preConfLibreOffice() {
 	cd /home/$USER/Downloads || mkdir home/$USER/Downloads && cd /home/$USER/Downloads
 	wget https://pt-br.libreoffice.org/assets/Uploads/PT-BR-Documents/VERO/VeroptBR3215AOC.oxt
 }
@@ -152,7 +153,7 @@ preConfLibreOffice {
 
 installPackagesPacman
 confGit
-#code
+code
 postman
 aurInstall
 angular

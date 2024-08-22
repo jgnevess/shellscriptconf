@@ -144,6 +144,12 @@ startDocker() {
     echo "Docker iniciado...."
 }
 
+preConfLibreOffice {
+	cd /home/$USER/Downloads || mkdir home/$USER/Downloads && cd /home/$USER/Downloads
+	wget https://pt-br.libreoffice.org/assets/Uploads/PT-BR-Documents/VERO/VeroptBR3215AOC.oxt
+}
+
+
 installPackagesPacman
 confGit
 #code
@@ -152,5 +158,6 @@ aurInstall
 angular
 confNeoVim
 startDocker
+preConfLibreOffice
 
 echo "Configurações de pós instalação do Arch Linux finalizadas..."
